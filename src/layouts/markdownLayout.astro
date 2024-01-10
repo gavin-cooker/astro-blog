@@ -1,0 +1,14 @@
+---
+import BlogLayout from "./blogLayout.astro";
+const { frontmatter } = Astro.props;
+---
+
+<BlogLayout
+    title={frontmatter.title}
+    description={frontmatter.description}
+    author={frontmatter.author}
+    pubDate={frontmatter.pubDate}
+    heroImage={frontmatter.heroImage}
+>
+<slot />
+</BlogLayout>
