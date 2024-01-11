@@ -1,23 +1,25 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
-import BlogBrief from '../../components/blogBrief.vue';
-import BaseLayout from '../../layouts/baseLayout.astro';
-import { PAGE_SIZE } from '../../util';
+import { getCollection, type CollectionEntry } from "astro:content";
+import BlogBrief from "../../components/blogBrief.vue";
+import BaseLayout from "../../layouts/baseLayout.astro";
+import { PAGE_SIZE } from "../../util";
+import Pagination from "../../components/pagination.vue";
 
-type Props = CollectionEntry<"blog">
+type Props = CollectionEntry<"blog">;
 export async function getStaticPaths({ paginate }) {
-  const allPosts = await getCollection("blog");
+  const allPosts = (await getCollection("blog")).sort(
+  (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
   return paginate(allPosts, { pageSize: PAGE_SIZE });
 }
-// 所有分页数据都在 "page" 参数中传递
+
+
 const { page } = Astro.props;
-console.log('[page] Astro.props:', page);
+console.log('[test] props', Astro.props, ',params:', Astro.params);
 ---
 
 <BaseLayout>
-    <h1>Page {page.currentPage}</h1>
-    <section>
-        <BlogBrief blogs={page.data} />
-    </section>
+  <section>
+    <BlogBrief blogs={page.data} />
+  </section>
+  <Pagination currentPage={page.currentPage} maxPage={page.lastPage} />
 </BaseLayout>
-<!-- 显示当前页面。也可以使用 Astro.params.page！-->

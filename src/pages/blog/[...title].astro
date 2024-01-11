@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 }
 
 const post = Astro.props;
-console.log('post:', post);
+// console.log('post:', post);
 const { Content } = await post.render();
 const fileContent = post.data;
 // console.log("[...title] props is :", post);
