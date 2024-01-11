@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/baseLayout.astro";
+import { getRandomColor, getRandomSize } from "../../util";
+import Tag from "../../components/tag.vue";
+import CommonLink from '../../components/commonLink.vue';
+
+const allPosts = await getCollection("blog");
+const tags = [
+    ...new Set(
+        allPosts
+            .map((posts) => {
+                return posts.data.tags;
+            })
+            .flat(),
+    ),
+];
+// console.log("[tags index] tags", tags);
+---
+
+<BaseLayout>
+    <div class="tags">
+        {
+            tags.map((tag, index) => {
+                return (
+                    <Tag color={getRandomColor()} size={getRandomSize()}>
+        				<CommonLink href={'/tags/' + tag}>{tag}</CommonLink>
+                    </Tag>)
+            })
+        }
+    </div>
+</BaseLayout>
+
+<style scoped>
+    .tags {
+        display: flex;
+    }
+</style>

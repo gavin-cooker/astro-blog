@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/baseLayout.astro";
+import BlogBrief from "../../components/blogBrief.vue";
+
+export async function getStaticPaths() {
+    //   const allPosts = await Astro.glob("../posts/*.md");
+    const allPosts = await getCollection("blog");
+
+    const uniqueTags = [
+        ...new Set(allPosts.map((post) => post.data.tags).flat()),
+    ];
+
+    return uniqueTags.map((tag) => {
+        const filteredPosts = allPosts.filter((post) =>
+            post.data.tags.includes(tag),
+        );
+        return {
+            params: { tag },
+            props: { posts: filteredPosts },
+        };
+    });
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout>
+    tag is {tag}:
+    <BlogBrief blogs={posts} />
+</BaseLayout>

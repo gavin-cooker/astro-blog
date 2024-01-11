@@ -5,7 +5,8 @@
 			<div class="internal-links">
 				<commonLink :href="'/'">Home</commonLink>
 				<commonLink :href="'/blog'">Blog</commonLink>
-				<commonLink :href="'/about'">About</commonLink>
+				<commonLink :href="'/tags'">Tags</commonLink>
+				<commonLink :href="'/blog/about'">About</commonLink>
 			</div>
 		</nav>
 	</header>

@@ -1,0 +1,23 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BlogBrief from '../../components/blogBrief.vue';
+import BaseLayout from '../../layouts/baseLayout.astro';
+import { PAGE_SIZE } from '../../util';
+
+type Props = CollectionEntry<"blog">
+export async function getStaticPaths({ paginate }) {
+  const allPosts = await getCollection("blog");
+  return paginate(allPosts, { pageSize: PAGE_SIZE });
+}
+// 所有分页数据都在 "page" 参数中传递
+const { page } = Astro.props;
+console.log('[page] Astro.props:', page);
+---
+
+<BaseLayout>
+    <h1>Page {page.currentPage}</h1>
+    <section>
+        <BlogBrief blogs={page.data} />
+    </section>
+</BaseLayout>
+<!-- 显示当前页面。也可以使用 Astro.params.page！-->

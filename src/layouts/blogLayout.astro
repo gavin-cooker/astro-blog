@@ -1,23 +1,25 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import BaseLayout from "./baseLayout.astro";
-
+import Tag from '../components/tag.vue'
+import { getRandomColor } from '../util/index'
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, author, pubDate, heroImage } = Astro.props;
-console.log("blog layout: ", Astro.props);
+const { title, description, author, pubDate, heroImage, tags } = Astro.props;
+// console.log("blog layout: ", Astro.props);
+
 ---
 
 <BaseLayout>
     <article>
-        <div class="title">
+        <header>
             <div class="author">
                 <div class="hero-image">
                     {heroImage && <img src={heroImage} alt="" />}
                 </div>
                 {author}
             </div>
-            <div class="content">
+            <div class="title">
                 <h3>{title}</h3>
                 <div class="description">
                     {description}
@@ -29,11 +31,22 @@ console.log("blog layout: ", Astro.props);
                         )
                     }
                 </div>
+                <div class="tags">
+                    {
+                        tags.map((tag, index) => {
+                            return (
+                                <Tag color={getRandomColor()} size={1}>
+                                    {tag}
+                                </Tag>
+                            )
+                        })
+                    }
+                </div>
             </div>
-        </div>
-        <div class="page">
+        </header>
+        <main>
             <slot />
-        </div>
+        </main>
     </article>
 </BaseLayout>
 
@@ -42,7 +55,7 @@ console.log("blog layout: ", Astro.props);
         color: #000;
         background: #fff6df;
         padding: 20px;
-        .title {
+        header {
             display: flex;
             justify-content: space-between;
         }
@@ -55,7 +68,7 @@ console.log("blog layout: ", Astro.props);
                 border-radius: 50%;
             }
         }
-        .content {
+        .title {
             display: flex;
             flex-direction: column;
             .description {
@@ -63,8 +76,11 @@ console.log("blog layout: ", Astro.props);
                 font-size: 12px;
                 text-align: right;
             }
+            .tags {
+                display: flex;
+            }
         }
-        .page {
+        main {
             text-indent: 20px;
         }
     }

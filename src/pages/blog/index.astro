@@ -1,31 +1,27 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/baseLayout.astro";
+import { PAGE_SIZE } from "../../util";
+import CommonLink from "../../components/commonLink.vue";
 
 const posts = (await getCollection("blog")).sort(
     (a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf(),
 );
+const postCount = posts.length;
+const pageCount = Math.ceil(postCount / PAGE_SIZE);
 ---
 
 <BaseLayout>
-    <section>
-        <ul>
-            {
-                posts.map((post) => (
-                    <li>
-                        <a href={`/blog/${post.slug}/`}>
-                            <img
-                                width={180}
-                                height={90}
-                                src={post.data.heroImage}
-                                alt=""
-                            />
-                            <h4 class="title">{post.data.title}</h4>
-                            <p class="date">{post.data.pubDate}</p>
-                        </a>
-                    </li>
-                ))
-            }
-        </ul>
-    </section>
+    <div>
+        pageCount: {pageCount}
+    </div>
+    {
+        Array(pageCount)
+            .fill(null)
+            .map((value, index) => (
+                <CommonLink href={"/blog/" + (index + 1)}>
+                    {index + 1}
+                </CommonLink>
+            ))
+    }
 </BaseLayout>
