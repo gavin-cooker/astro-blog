@@ -1,8 +1,35 @@
 ---
 import Button from "../components/button.vue";
 import BaseLayout from "../layouts/baseLayout.astro";
+import FeedbackForm from "../components/FeedbackForm.vue";
+const showText = (text: string) => {
+	console.log("astro handle text:", text);
+};
 ---
 
 <BaseLayout>
-	<Button text={"测试"} />
+	<FeedbackForm client:load />
+	<Button client:load text={"测试"} />
+	<div class="astroEntry"></div>
+	<div id="dialog" style="display: hidden">Hello world!</div>
+	<div>
+		self event detail:
+		<div class="event"></div>
+	</div>
 </BaseLayout>
+
+<script>
+	import { isOpen } from "../store/index";
+	isOpen.subscribe((open) => {
+		if (open) {
+			document.getElementById("dialog").style.display = "block";
+		} else {
+			document.getElementById("dialog").style.display = "none";
+		}
+	});
+	const astroEntryElement = document.querySelector(".astroEntry");
+	astroEntryElement?.addEventListener("trigger", ({detail}) => {
+		console.log("self event data:", detail);
+		document.querySelector(".event").innerHTML = document.querySelector(".event").innerHTML + detail;
+	});
+</script>

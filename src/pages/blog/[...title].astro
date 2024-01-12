@@ -15,6 +15,7 @@ const post = Astro.props;
 const { Content } = await post.render();
 const fileContent = post.data;
 // console.log("[...title] props is :", post);
+export const prerender = true
 ---
 
 <BlogLayout
