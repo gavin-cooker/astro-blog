@@ -21,7 +21,7 @@ const tags = [
 <BaseLayout>
     <div class="tags">
         {
-            tags.map((tag, index) => {
+            tags.map((tag, _) => {
                 return (
                     <Tag color={getRandomColor()} size={getRandomSize()}>
         				<CommonLink href={'/tags/' + tag}>{tag}</CommonLink>

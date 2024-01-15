@@ -10,6 +10,11 @@ export default defineConfig({
   integrations: [mdx(), sitemap(), vue()],
   output: 'server',
   adapter: node({
-    mode: "standalone"
-  })
+    mode: "middleware"
+  }),
+  vite: {
+    ssr: {
+      noExternal: ['path-to-regexp'],
+    },
+  },
 });

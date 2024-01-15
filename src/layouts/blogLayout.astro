@@ -33,7 +33,7 @@ const { title, description, author, pubDate, heroImage, tags } = Astro.props;
                 </div>
                 <div class="tags">
                     {
-                        tags.map((tag, index) => {
+                        tags.map((tag, _) => {
                             return (
                                 <Tag color={getRandomColor()} size={1}>
                                     {tag}

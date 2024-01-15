@@ -2,9 +2,6 @@
 import Button from "../components/button.vue";
 import BaseLayout from "../layouts/baseLayout.astro";
 import FeedbackForm from "../components/FeedbackForm.vue";
-const showText = (text: string) => {
-	console.log("astro handle text:", text);
-};
 ---
 
 <BaseLayout>
@@ -27,9 +24,12 @@ const showText = (text: string) => {
 			document.getElementById("dialog").style.display = "none";
 		}
 	});
-	const astroEntryElement = document.querySelector(".astroEntry");
-	astroEntryElement?.addEventListener("trigger", ({detail}) => {
-		console.log("self event data:", detail);
-		document.querySelector(".event").innerHTML = document.querySelector(".event").innerHTML + detail;
-	});
+	// const astroEntryElement = document.querySelector(".astroEntry");
+	// astroEntryElement?.addEventListener("trigger", ({detail}) => {
+	// 	console.log("self event data:", detail);
+	// 	const eventTarget = document.querySelector(".event")
+	// 	if (eventTarget) {
+	// 		eventTarget.innerHTML = eventTarget.innerHTML + detail;
+	// 	}
+	// });
 </script>
