@@ -6,9 +6,8 @@ import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
   integrations: [mdx(), sitemap(), vue()],
-  output: 'server',
+  output: 'hybrid', // 默认预构建/ssg
   adapter: node({
     mode: "middleware"
   }),

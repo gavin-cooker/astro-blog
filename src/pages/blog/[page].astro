@@ -14,9 +14,8 @@ export async function getStaticPaths({ paginate }) {
 
 
 const { page } = Astro.props as any;
-console.log('[test] props', Astro.props, ',params:', Astro.params);
+console.log('[page] props', Astro.props, ',params:', Astro.params);
 
-export const prerender = true
 ---
 
 <BaseLayout>

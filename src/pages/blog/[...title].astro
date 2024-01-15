@@ -1,30 +1,34 @@
 ---
 import { getCollection } from "astro:content";
 import BlogLayout from "../../layouts/blogLayout.astro";
+import { GET } from "../api/data.json";
 
-export async function getStaticPaths() {
-    const posts = await getCollection("blog");
-    return posts.map((post) => ({
-        params: { title: post.slug },
-        props: post,
-    }));
+export const prerender = false;
+console.log("ssr page render start...");
+const { title: queryBlog } = Astro.params;
+const blogCollection = await getCollection("blog");
+const posts = blogCollection.filter((post) => {
+    return post.slug === queryBlog;
+});
+const hasPage = posts && posts.length && posts.length > 0;
+if (!hasPage) {
+    return Astro.redirect("/404");
 }
-
-const post = Astro.props;
-// console.log('post:', post);
-const { Content } = await post.render();
-const fileContent = post.data;
-// console.log("[...title] props is :", post);
-export const prerender = true
+const post = posts[0];
+const pageContent = post.data;
+const Content = (await post.render()).Content;
+const response = await GET();
+const dataJson = await response.json();
+console.log('[...title] props', Astro.props, ',params:', Astro.params);
 ---
-
+<!-- make sure pageContent exist -->
 <BlogLayout
-    title={fileContent.title}
-    description={fileContent.description}
-    author={fileContent.author}
-    pubDate={fileContent.pubDate}
-    heroImage={fileContent.heroImage}
-    tags={fileContent.tags}
+    title={pageContent.title}
+    description={pageContent.description + '---from:' + dataJson.message}
+    author={pageContent.author}
+    pubDate={pageContent.pubDate}
+    heroImage={pageContent.heroImage}
+    tags={pageContent.tags}
 >
     <Content />
 </BlogLayout>
