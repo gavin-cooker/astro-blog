@@ -2,31 +2,37 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/baseLayout.astro";
 import BlogBrief from "../../components/blogBrief.vue";
+import { computed } from "vue";
 
-export async function getStaticPaths() {
-    //   const allPosts = await Astro.glob("../posts/*.md");
-    const allPosts = await getCollection("blog");
+export const prerender = false;
 
-    const uniqueTags = [
-        ...new Set(allPosts.map((post) => post.data.tags).flat()),
-    ];
-
-    return uniqueTags.map((tag) => {
-        const filteredPosts = allPosts.filter((post) =>
-            post.data.tags.includes(tag),
-        );
-        return {
-            params: { tag },
-            props: { posts: filteredPosts },
-        };
-    });
-}
-
-const { tag } = Astro.params;
-const { posts } = Astro.props;
+const localPosts = await getCollection("blog");
+const remoteResponse = await fetch("http://localhost:8080/api/blog", {
+    method: "GET",
+});
+const remotePosts = (await remoteResponse.json()).map((item) => {
+    return {
+        slog: item.title,
+        data: {
+            ...item,
+        },
+    };
+});
+const allPosts = localPosts.concat(remotePosts);
+const { tag: queryTag } = Astro.params;
+const posts = allPosts.filter((post) => {
+    return post.data.tags.includes(queryTag)
+});
+const hasPost = computed(() => {
+    return posts && posts.length > 0
+})
 ---
 
 <BaseLayout>
-    tag is {tag}:
-    <BlogBrief blogs={posts} />
+    tag is {queryTag}:
+    {
+        hasPost ?
+        <BlogBrief blogs={posts} /> :
+        <div>nothing to show</div>
+    }
 </BaseLayout>

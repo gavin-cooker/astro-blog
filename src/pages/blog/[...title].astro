@@ -4,7 +4,7 @@ import BlogLayout from "../../layouts/blogLayout.astro";
 import { GET } from "../api/data.json";
 
 export const prerender = false;
-console.log("ssr page render start...");
+
 const { title: queryBlog } = Astro.params;
 const blogCollection = await getCollection("blog");
 const posts = blogCollection.filter((post) => {
