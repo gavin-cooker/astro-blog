@@ -3,36 +3,26 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/baseLayout.astro";
 import BlogBrief from "../../components/blogBrief.vue";
 import { computed } from "vue";
+import { buildPage } from "../../util";
 
 export const prerender = false;
 
 const localPosts = await getCollection("blog");
-const remoteResponse = await fetch("http://localhost:8080/api/blog", {
+const response = await fetch("http://localhost:8080/api/blog", {
     method: "GET",
 });
-const remotePosts = (await remoteResponse.json()).map((item) => {
-    return {
-        slog: item.title,
-        data: {
-            ...item,
-        },
-    };
-});
+const remotePosts = await buildPage(response);
 const allPosts = localPosts.concat(remotePosts);
 const { tag: queryTag } = Astro.params;
 const posts = allPosts.filter((post) => {
-    return post.data.tags.includes(queryTag)
+    return post.data.tags.includes(queryTag);
 });
 const hasPost = computed(() => {
-    return posts && posts.length > 0
-})
+    return posts && posts.length > 0;
+});
 ---
 
 <BaseLayout>
     tag is {queryTag}:
-    {
-        hasPost ?
-        <BlogBrief blogs={posts} /> :
-        <div>nothing to show</div>
-    }
+    {hasPost ? <BlogBrief blogs={posts} /> : <div>nothing to show</div>}
 </BaseLayout>

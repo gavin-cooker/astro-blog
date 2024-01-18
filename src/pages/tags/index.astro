@@ -1,11 +1,16 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/baseLayout.astro";
-import { getRandomColor, getRandomSize } from "../../util";
+import { buildPage, getRandomColor, getRandomSize } from "../../util";
 import Tag from "../../components/tag.vue";
-import CommonLink from '../../components/commonLink.vue';
+import CommonLink from "../../components/commonLink.vue";
 
-const allPosts = await getCollection("blog");
+const localPosts = await getCollection("blog");
+const response = await fetch("http://localhost:8080/api/blog", {
+    method: "GET",
+});
+const remotePosts = await buildPage(response);
+const allPosts = localPosts.concat(remotePosts);
 const tags = [
     ...new Set(
         allPosts
@@ -23,8 +28,9 @@ const tags = [
             tags.map((tag, _) => {
                 return (
                     <Tag color={getRandomColor()} size={getRandomSize()}>
-        				<CommonLink href={'/tags/' + tag}>{tag}</CommonLink>
-                    </Tag>)
+                        <CommonLink href={"/tags/" + tag}>{tag}</CommonLink>
+                    </Tag>
+                );
             })
         }
     </div>

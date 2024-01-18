@@ -9,14 +9,14 @@ const addBlogModel = async (blog) => {
         `A document was inserted with the _id: ${result.insertedId}`,
      );
 }
-const getBlogModel = async () => {
+const queryBlogModel = async (query = {}) => {
     const db = await getClient()
     const collection = db.collection(COLLECTION_NAME)
-    let cursor = collection.find({})
+    let cursor = collection.find(query)
     const result = await cursor.toArray()
     return result;
 }
 export {
     addBlogModel,
-    getBlogModel
+    queryBlogModel
 }

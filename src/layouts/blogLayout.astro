@@ -1,12 +1,11 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import BaseLayout from "./baseLayout.astro";
-import Tag from '../components/tag.vue'
-import { getRandomColor } from '../util/index'
+import Tag from "../components/tag.vue";
+import { getRandomColor } from "../util/index";
 type Props = CollectionEntry<"blog">["data"];
 
 const { title, description, author, pubDate, heroImage, tags } = Astro.props;
-
 ---
 
 <BaseLayout>
@@ -37,7 +36,7 @@ const { title, description, author, pubDate, heroImage, tags } = Astro.props;
                                 <Tag color={getRandomColor()} size={1}>
                                     {tag}
                                 </Tag>
-                            )
+                            );
                         })
                     }
                 </div>

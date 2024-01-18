@@ -1,0 +1,10 @@
+---
+import MyForm from '../../components/form/index.vue'
+export const prerender = false;
+
+console.log(Astro.params, '|||', Astro.props, '|||', Astro.url)
+---
+
+<div>
+    <MyForm type="add" />
+</div>

@@ -1,0 +1,15 @@
+---
+import MyForm from '../../components/form/index.vue'
+export const prerender = false;
+
+const updateBlogId = Astro.url.searchParams.get('id')
+console.log(updateBlogId);
+
+console.log(Astro.params, '|||', Astro.props, '|||', Astro.url)
+---
+
+
+<div>
+    <MyForm type="update" />
+</div>
+

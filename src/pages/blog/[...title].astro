@@ -1,34 +1,78 @@
 ---
-import { getCollection } from "astro:content";
+import { getEntry } from "astro:content";
 import BlogLayout from "../../layouts/blogLayout.astro";
 import { GET } from "../api/data.json";
+import { buildPage } from "../../util";
 
 export const prerender = false;
 
 const { title: queryBlog } = Astro.params;
-const blogCollection = await getCollection("blog");
-const posts = blogCollection.filter((post) => {
-    return post.slug === queryBlog;
-});
-const hasPage = posts && posts.length && posts.length > 0;
-if (!hasPage) {
-    return Astro.redirect("/404");
+if (queryBlog === undefined) {
+    throw new Error("queryBlog title is required");
 }
-const post = posts[0];
-const pageContent = post.data;
-const Content = (await post.render()).Content;
+let Content = null;
+let pageContent = null;
+
+const entry = await getEntry("blog", queryBlog);
+let editAble = false
+if (entry) {
+    // render local file content
+    pageContent = entry.data;
+    Content = (await entry.render()).Content;
+} else {
+    // await remote db content
+    let response = await fetch(
+        "http://localhost:8080/api/blog/" + queryBlog,
+        {
+            method: "GET",
+        },
+    );
+    if (response) {
+        // render remote db content
+        pageContent = ((await buildPage(response))[0]).data;
+        editAble = true
+    } else {
+        return Astro.redirect("/404");
+    }
+}
+
 const response = await GET();
 const dataJson = await response.json();
-console.log('[...title] props', Astro.props, ',params:', Astro.params);
+const BASE_URL = Astro.url.href + 'update'
+console.log(
+    "[...title] props",
+    Astro.props,
+    ",params:",
+    Astro.params,
+    ",pageContent:",
+    pageContent,
+    ',BASE_URL:',
+    BASE_URL
+);
 ---
-<!-- make sure pageContent exist -->
+
 <BlogLayout
     title={pageContent.title}
-    description={pageContent.description + '---from:' + dataJson.message}
+    description={pageContent.description + "---from:" + dataJson.message}
     author={pageContent.author}
     pubDate={pageContent.pubDate}
     heroImage={pageContent.heroImage}
     tags={pageContent.tags}
 >
-    <Content />
+    {Content ? <Content /> : <div>{pageContent.content}</div>}
+    {
+        editAble && <div class="update"><a href={'/blog/update?id=' + pageContent._id}>去修改</a></div>
+    }
 </BlogLayout>
+<style lang="scss" scoped>
+    .update {
+        width: fit-content;
+        background: orange;
+        text-align: center;
+        padding: 0.2rem;
+        text-indent: initial;
+        color: #fff;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+</style>

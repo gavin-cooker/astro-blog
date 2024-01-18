@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "server": "node ./server/index.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.4.1",
@@ -16,13 +17,19 @@
     "@astrojs/rss": "^4.0.1",
     "@astrojs/sitemap": "^3.0.4",
     "@astrojs/vue": "^4.0.8",
+    "add": "^2.0.6",
     "astro": "^4.1.1",
+    "element-plus": "^2.5.1",
     "express": "^4.18.2",
     "mongodb": "^6.3.0",
     "nanostores": "^0.9.5",
     "pinia": "^2.1.7",
     "typescript": "^5.3.3",
-    "vue": "^3.4.6"
+    "unplugin-auto-import": "^0.17.3",
+    "unplugin-element-plus": "^0.8.0",
+    "unplugin-vue-components": "^0.26.0",
+    "vue": "^3.4.6",
+    "yarn": "^1.22.21"
   },
   "devDependencies": {
     "sass": "^1.69.7"

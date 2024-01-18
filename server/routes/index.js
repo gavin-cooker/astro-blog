@@ -5,6 +5,7 @@ const router = express.Router()
 router.put('/api/blog', api.addBlog)
 router.delete('/api/blog', api.deleteBlog)
 router.post('/api/blog', api.updateBlog) 
-router.get('/api/blog', api.getBlog)
+router.get('/api/blog/:title', api.getBlogByTitle)
+router.get('/api/blog', api.getBlogs)
 
 export default router
