@@ -16,11 +16,10 @@ const buildPage = async (response: Response) => {
   const resJson = await response.json()
   return resJson.map(item => {
     return {
-      slug: item.title,
+      slug: item._id,
       data: {
         ...item,
-        heroImage: '/blog-placeholder-2.jpg',
-        pubDate: dateFromObjectId(item._id)
+        // heroImage: '/blog-placeholder-2.jpg',
       }
     }
   })

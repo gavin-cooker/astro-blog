@@ -5,7 +5,9 @@ import Tag from "../components/tag.vue";
 import { getRandomColor } from "../util/index";
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, author, pubDate, heroImage, tags } = Astro.props;
+const { title, description, author, 
+// pubDate, heroImage,
+ tags } = Astro.props;
 ---
 
 <BaseLayout>
@@ -13,7 +15,7 @@ const { title, description, author, pubDate, heroImage, tags } = Astro.props;
         <header>
             <div class="author">
                 <div class="hero-image">
-                    {heroImage && <img src={heroImage} alt="" />}
+                    <!-- {heroImage && <img src={heroImage} alt="" />} -->
                 </div>
                 {author}
             </div>
@@ -22,11 +24,11 @@ const { title, description, author, pubDate, heroImage, tags } = Astro.props;
                 <div class="description">
                     {description}
                     {
-                        pubDate && (
-                            <div class="last-updated-on">
-                                Published: {pubDate}
-                            </div>
-                        )
+                        // pubDate && (
+                        //     <div class="last-updated-on">
+                        //         Published: {pubDate}
+                        //     </div>
+                        // )
                     }
                 </div>
                 <div class="tags">

@@ -12,6 +12,7 @@ declare module 'vue' {
     CommonLink: typeof import('./src/components/commonLink.vue')['default']
     FeedbackForm: typeof import('./src/components/FeedbackForm.vue')['default']
     Footer: typeof import('./src/components/footer.vue')['default']
+    Form: typeof import('./src/components/form/index.vue')['default']
     Header: typeof import('./src/components/header.vue')['default']
     Pagination: typeof import('./src/components/pagination.vue')['default']
     Tag: typeof import('./src/components/tag.vue')['default']

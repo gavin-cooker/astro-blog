@@ -1,15 +1,19 @@
 ---
-import MyForm from '../../components/form/index.vue'
+import MyForm from "../../components/form/index.vue";
+import BaseLayout from "../../layouts/baseLayout.astro";
+import { buildPage } from "../../util";
 export const prerender = false;
 
-const updateBlogId = Astro.url.searchParams.get('id')
+const updateBlogId = Astro.url.searchParams.get("id");
 console.log(updateBlogId);
 
-console.log(Astro.params, '|||', Astro.props, '|||', Astro.url)
+let response = await fetch("http://localhost:8080/api/blog/" + updateBlogId, {
+    method: "GET",
+});
+const pageContent = (await buildPage(response))[0].data;
 ---
 
-
-<div>
-    <MyForm type="update" />
-</div>
-
+<BaseLayout>
+    <!-- <MyForm type="update" :data={pageContent} /> -->
+    <MyForm type="update" data={pageContent} client:visible />
+</BaseLayout>
