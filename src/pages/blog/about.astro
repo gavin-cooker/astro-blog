@@ -1,0 +1,21 @@
+---
+import BlogLayout from "../../layouts/blogLayout.astro";
+import { getEntry } from "astro:content";
+
+export const prerender = true;
+
+const post = await getEntry('blog', 'about')
+const { Content } = await post.render();
+const fileContent = post.data;
+---
+
+<BlogLayout
+    title={fileContent.title}
+    description={fileContent.description}
+    author={fileContent.author}
+    pubDate={fileContent.pubDate}
+    heroImage={fileContent.heroImage}
+    tags={fileContent.tags}
+>
+    <Content />
+</BlogLayout>
