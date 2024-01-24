@@ -5,6 +5,8 @@ import { buildPage, getRandomColor, getRandomSize } from "../../util";
 import Tag from "../../components/tag.vue";
 import CommonLink from "../../components/commonLink.vue";
 
+export const prerender = false;
+
 const localPosts = await getCollection("blog");
 const response = await fetch("http://localhost:8080/api/blog", {
     method: "GET",
