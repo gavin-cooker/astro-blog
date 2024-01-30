@@ -6,19 +6,11 @@
  * 
  */
 import type { App } from 'vue'
-// import { ID_INJECTION_KEY } from 'element-plus'
-import ElementPlus from 'element-plus'
-import 'element-plus/theme-chalk/src/button.scss'
-import 'element-plus/theme-chalk/src/tag.scss'
-import 'element-plus/theme-chalk/src/form.scss'
-import 'element-plus/theme-chalk/src/form-item.scss'
-import 'element-plus/theme-chalk/src/input.scss'
-import 'element-plus/theme-chalk/base.css'
+import { ID_INJECTION_KEY } from 'element-plus'
 export default (app: App) => {
   console.log('reach vue app instance')
-  app.use(ElementPlus)
-//   app.provide(ID_INJECTION_KEY, {
-//     prefix: 1024,
-//     current: 0
-//   })
+  app.provide(ID_INJECTION_KEY, {
+    prefix: 1024,
+    current: 0
+  })
 }

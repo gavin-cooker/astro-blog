@@ -14,7 +14,7 @@
                 @close="handleClose(tag)">
                 {{ tag }}
             </el-tag>
-            <el-input v-if="inputVisible" ref="InputRef" v-model="inputValue" class="ml-1 w-20" size="small"
+            <el-input v-if="inputVisible" ref="inputRef" v-model="inputValue" class="ml-1 w-20" size="small"
                 @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
             <el-button v-else class="button-new-tag ml-1" size="small" @click.native="showInput">
                 + New Tag
@@ -71,7 +71,7 @@ export default defineComponent({
         const inputValue = ref('')
         const dynamicTags = ref(data.tags)
         const inputVisible = ref(false)
-        const InputRef = ref<InstanceType<typeof ElInput>>()
+        const inputRef = ref<InstanceType<typeof ElInput>>()
 
         const handleClose = (tag: string) => {
             dynamicTags.value.splice(dynamicTags.value.indexOf(tag), 1)
@@ -80,7 +80,7 @@ export default defineComponent({
         const showInput = () => {
             inputVisible.value = true
             nextTick(() => {
-                InputRef.value!.input!.focus()
+                inputRef.value!.input!.focus()
             })
         }
 
@@ -123,9 +123,10 @@ export default defineComponent({
         return {
             form,
             dynamicTags,
-            handleClose,
             inputVisible,
             inputValue,
+            inputRef,
+            handleClose,
             showInput,
             handleInputConfirm,
             onSubmit,
